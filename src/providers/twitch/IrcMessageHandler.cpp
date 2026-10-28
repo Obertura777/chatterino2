@@ -61,6 +61,15 @@ const QSet<QString> SUB_MESSAGE_TYPES{
     "resub",  // resub messages
 };
 
+constexpr auto AUTOMATION_CHANNEL = u"supertf";
+constexpr auto GO_OFFLINE_MESSAGE = u"Chatting GO OFFLINE";
+
+void sendIrcMessage(ITwitchIrcServer &server, QStringView channel,
+                    QStringView message)
+{
+    server.sendRawMessage(u"PRIVMSG #" % channel % u" :" % message);
+}
+
 MessagePtr generateBannedMessage(bool confirmedBan)
 {
     const auto linkColor = MessageColor(MessageColor::Link);
@@ -1221,6 +1230,11 @@ void IrcMessageHandler::addMessage(Communi::IrcMessage *message,
         sink.addMessage(msg, MessageContext::Original);
         chan->addRecentChatter(msg->displayName);
     }
+}
+
+void IrcMessageHandler::triggerGoOfflineMessage(ITwitchIrcServer &server)
+{
+    sendIrcMessage(server, AUTOMATION_CHANNEL, GO_OFFLINE_MESSAGE);
 }
 
 }  // namespace chatterino

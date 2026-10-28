@@ -72,6 +72,9 @@ public:
                            TwitchChannel *chan, const QString &originalContent,
                            ITwitchIrcServer &twitch, AddMessageArgs addArgs);
 
+    /// Sends GO_OFFLINE_MESSAGE to #supertf once
+    static void triggerGoOfflineMessage(ITwitchIrcServer &server);
+
 private:
     static float similarity(const MessagePtr &msg,
                             const std::vector<MessagePtr> &messages);
